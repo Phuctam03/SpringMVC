@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Book</title>
+</head>
+<body>
+<h1>List Book</h1>
+<span th:text="${code}"></span>
+<table border="1" cellspacing="2" cellpadding="5">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>author</th>
+        <th>realasedate</th>
+        <th>numbers</th>
+        <th>Borrow</th>
+    </tr>
+    <tr th:each="b :${books}" th:object="${b}">
+        <td th:text="*{id}"></td>
+        <td th:text="*{name}"></td>
+        <td th:text="*{author}"></td>
+        <td th:text="*{#dates.format(realasedate, 'dd/MM/yyyy')}"></td>
+        <td th:text="*{numbers}"></td>
+        <td>
+            <a th:href="@{/book/borrow(id = *{id})}">Borrow</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

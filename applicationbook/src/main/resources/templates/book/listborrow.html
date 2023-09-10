@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Borrow</title>
+</head>
+<body>
+<form th:action="@{/book/returnBook}" method="post">
+    <input type="text" name="search" placeholder="input id">
+    <input type="submit" value="Return">
+    <span th:text="${error}"></span>
+</form>
+<table border="1" cellpadding="2" cellspacing="5">
+    <tr>
+        <th>id</th>
+        <th>nameBook</th>
+        <th>author</th>
+        <th>releaseDate</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="u : ${userBooks}" th:object="${u}">
+         <td th:text="*{id}"></td>
+         <td th:text="*{book.name}"></td>
+         <td th:text="*{book.author}"></td>
+         <td th:text="*{#dates.format(book.realasedate, 'dd/MM/yyyy')}"></td>
+        <td th:if="*{status == true}">
+             <span>in use</span>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
