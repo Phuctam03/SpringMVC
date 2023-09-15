@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>cart</title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<h1>CartList</h1>
+<a th:href="@{/product}">Back to list product</a>
+<div th:if="${cart != null && cart.getProducts().size() > 0 }">
+    <table th:if="${cart != null && cart.getProducts().size() > 0 }">
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        <tr th:each="c : ${cart.getProducts()}" th:object="${c}">
+            <td th:text="*{key.id}"></td>
+            <td>
+                <a th:href="@{/product/detail(id = *{key.id})}">
+                    <img th:src="@{*{key.image}}" style="width: 50px;height: 50px">
+                </a>
+            </td>
+            <td th:text="*{key.name}"></td>
+            <td th:text="*{#numbers.formatCurrency(key.price)}"></td>
+            <td>
+                 <button><a th:href="@{/cart/add/__${c.key.id}}__">-</a></button>
+                <span th:text="*{value}" id="quantity"></span>
+                <button><a th:href="@{/cart/sub/__${c.key.id}}__">-</a></button>
+            </td>
+        </tr>
+    </table>
+    <span >Total:<span th:text="${#numbers.formatCurrency(cart.totalPayment())}"></span></span>
+</div>
+<div th:if="${cart == null || cart.getProducts().size() == 0}">
+    Empty
+</div>
+</body>
+<script>
+    function increaseQuantity() {
+        var quantityInput = document.getElementById("quantity");
+       return quantityInput + 1 ;
+    }
+    function decreaseQuantity() {
+        var quantityInput = document.getElementById("quantity");
+        var currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 0) {
+            quantityInput.value = currentQuantity - 1;
+        }
+    }
+</script>
+</html>
