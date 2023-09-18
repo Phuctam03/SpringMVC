@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Or Update Blog</title>
+</head>
+<body>
+<h1>Create Or Update</h1>
+<a th:href="@{/blog/listPaging}">Back to list</a>
+<form th:action="@{/blog/createOrUpdate}" method="post" th:object="${Blog}">
+    <table>
+         <tr>
+             <div th:switch="${action}">
+                 <td th:case="'create'">
+                     <input type="hidden" th:field="*{id}">
+                 </td>
+                 <td th:case="'update'">
+                     <span th:text="*{id}"></span>
+                     <input type="hidden" th:field="*{id}">
+                 </td>
+             </div>
+         </tr>
+        <tr>
+            <th>Name</th>
+            <td><input type="text" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <th>subject</th>
+            <td><input type="text" th:field="*{subject}"></td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td><select th:field="*{category}">
+                <option th:each="category :${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <th>content</th>
+            <td><textarea rows="7" cols="30" th:field="*{content}"></textarea></td>
+        </tr>
+        <tr>
+            <th>DayContent</th>
+            <td><input type="date" th:field="*{dateContent}"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Save" style="color: crimson">
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="action" th:value="${action}">
+</form>
+</body>
+</html>

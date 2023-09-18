@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            padding: 0;
+        }
+
+        h1 {
+            color: red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+        }
+
+        th {
+            padding: 10px;
+        }
+
+        .content {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Số dòng bạn muốn hiển thị */
+            overflow: hidden;
+        }
+
+        .Page {
+            position: relative;
+            display: flex; /* Sử dụng flexbox */
+            align-items: center; /* Căn chỉnh các phần tử con theo trục dọc */
+            justify-content: center;
+        }
+        .pag1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body class="container">
+<h1>List Blog</h1>
+<a th:href="@{/blog/home}">HOME</a>
+<form th:action="@{blog/search}" method="post">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name" style="width: 100px">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</form>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>subject</th>
+        <th>Content</th>
+        <th>Category</th>
+        <th>DateContent</th>
+        <th>Detail</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    <tr th:each="b :${Blogs}" th:object="${b}">
+        <td th:text="*{id}"></td>
+        <td th:text="*{name}"></td>
+        <td th:text="*{subject}"></td>
+        <td class="content" th:text="*{content}"></td>
+        <td th:text="*{category.name}"></td>
+        <td th:text="*{#dates.format(dateContent, 'dd/MM/yyyy')}"></td>
+        <td>
+            <button class="btn btn-primary" type="submit"><a th:href="@{/blog/detail(id=*{id})}">Detail</a></button>
+        </td>
+        <td>
+            <button class="btn btn-primary" type="submit"><a th:href="@{/blog/update(id=*{id})}">Update</a></button>
+        </td>
+        <td>
+            <button class="btn btn-primary" type="submit"><a th:href="@{/blog/delete(id=*{id})}">Delete</a></button>
+        </td>
+    </tr>
+</table>
+<div th:if="${Blogs.totalPages > 1 }" class="Page">
+        <a th:each="pageNumber :${pageNumbers}" class="pag1"
+           th:href="@{/blog/listPaging(page=${pageNumber},size=${Blogs.size})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber == Blogs.number + 1 }? active"></a>
+</div>
+</body>
+</html>
